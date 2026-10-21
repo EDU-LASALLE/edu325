@@ -1,0 +1,1359 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EDU- 325 | PSICOLOGÍAn</title>
+    <meta name="description"
+        content="EDU-325 PSICOLOGÍA – Universidad La Salle Bolivia. Docente: Lic. Ximena Borda.">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        vino: {
+                            50: '#fdf3f4',
+                            100: '#fbe5e9',
+                            200: '#f5cdd5',
+                            300: '#efa2b1',
+                            400: '#e36e85',
+                            500: '#d1435f',
+                            600: '#b82845',
+                            700: '#9b1c35',
+                            800: '#821a30',
+                            900: '#70192d',
+                            950: '#4a0f1e',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            scroll-behavior: smooth;
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(155, 28, 53, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .glass-card:hover {
+            background: rgba(253, 243, 244, 0.98);
+            border-color: rgba(155, 28, 53, 0.4);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px -5px rgba(155, 28, 53, 0.2);
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease-out;
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* =============================================
+           SUBTEMA ITEM — criterio de Desempeño interactivo
+        ============================================= */
+        .subtema-item {
+            position: relative;
+            cursor: pointer;
+            border-radius: 8px;
+            padding: 6px 8px;
+            transition: background 0.2s ease;
+            list-style: none;
+        }
+
+        .subtema-item:hover {
+            background: rgba(155, 28, 53, 0.07);
+        }
+
+        .criterio-panel {
+            display: none;
+            position: absolute;
+            left: 0;
+            top: calc(100% + 6px);
+            z-index: 100;
+            width: 290px;
+            background: linear-gradient(135deg, #821a30 0%, #70192d 100%);
+            color: #fff;
+            border-radius: 12px;
+            padding: 14px 16px;
+            box-shadow: 0 8px 30px rgba(130, 26, 48, 0.45);
+            font-size: 0.78rem;
+            line-height: 1.5;
+            animation: fadeSlideIn 0.22s ease forwards;
+        }
+
+        .criterio-panel::before {
+            content: '';
+            position: absolute;
+            top: -6px;
+            left: 18px;
+            border-left: 6px solid transparent;
+            border-right: 6px solid transparent;
+            border-bottom: 6px solid #821a30;
+        }
+
+        .criterio-panel .criterio-label {
+            font-size: 0.65rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, 0.65);
+            margin-bottom: 6px;
+        }
+
+        .criterio-panel .criterio-text {
+            font-size: 0.80rem;
+            color: #fff;
+        }
+
+        .subtema-item.open-left .criterio-panel {
+            left: auto;
+            right: 0;
+        }
+
+        .subtema-item.open-left .criterio-panel::before {
+            left: auto;
+            right: 18px;
+        }
+
+        .subtema-item.active-criterio .criterio-panel {
+            display: block;
+        }
+
+        @keyframes fadeSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-6px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .criterio-hint {
+            font-size: 0.6rem;
+            color: #9b1c35;
+            margin-left: 4px;
+            opacity: 0.55;
+            transition: opacity 0.2s;
+        }
+
+        .subtema-item:hover .criterio-hint {
+            opacity: 1;
+        }
+
+        /* =============================================
+           VIDEO TUTORIAL BUTTONS
+        ============================================= */
+        .video-btn {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(255, 255, 255, 0.12);
+            border: 1.5px solid rgba(255, 255, 255, 0.25);
+            color: #fff;
+            border-radius: 12px;
+            padding: 10px 20px;
+            font-size: 0.83rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            text-decoration: none;
+        }
+
+        .video-btn:hover {
+            background: rgba(255, 255, 255, 0.22);
+            border-color: rgba(255, 255, 255, 0.5);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+            color: #fff;
+        }
+
+        .video-btn .yt-icon {
+            color: #ff4444;
+            font-size: 1.15rem;
+            flex-shrink: 0;
+        }
+
+        /* =============================================
+           ONEDRIVE BUTTON (Examen Final)
+        ============================================= */
+        .onedrive-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255, 255, 255, 0.15);
+            border: 2px solid rgba(255, 255, 255, 0.38);
+            color: #fff;
+            border-radius: 10px;
+            padding: 9px 20px;
+            font-size: 0.82rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            text-decoration: none;
+            margin-top: 14px;
+            letter-spacing: 0.02em;
+        }
+
+        .onedrive-btn:hover {
+            background: rgba(255, 255, 255, 0.28);
+            border-color: rgba(255, 255, 255, 0.65);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 18px rgba(0, 0, 0, 0.3);
+            color: #fff;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50 text-gray-800 antialiased">
+
+    <!-- NAVEGACION -->
+    <nav class="bg-vino-900 text-white sticky top-0 z-50 shadow-lg transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center gap-3">
+                    <div class="p-0">
+                        <img src="bolivia.png" alt="Logo La Salle Bolivia" class="h-8 md:h-10 w-auto object-contain">
+                    </div>
+                    <span class="font-bold text-xl tracking-wide hidden sm:block ml-2">EDU-325 GESTIÓN 1/2027</span>
+                </div>
+                <div class="hidden md:flex space-x-2">
+                    <a href="#inicio" class="hover:bg-vino-800 px-3 py-2 rounded-md transition duration-300">Inicio</a>
+                    <a href="#docente"
+                        class="hover:bg-vino-800 px-3 py-2 rounded-md transition duration-300">Docente</a>
+                    <a href="#competencias"
+                        class="hover:bg-vino-800 px-3 py-2 rounded-md transition duration-300">Competencias</a>
+                    <a href="#temario"
+                        class="hover:bg-vino-800 px-3 py-2 rounded-md transition duration-300">Temario</a>
+                    <a href="#evaluacion"
+                        class="hover:bg-vino-800 px-3 py-2 rounded-md transition duration-300">Evaluación</a>
+                    <a href="#biblioteca"
+                        class="hover:bg-vino-800 px-3 py-2 rounded-md transition duration-300">Biblioteca</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- HERO -->
+    <header id="inicio" class="relative bg-vino-800 text-white overflow-hidden">
+        <div class="absolute inset-0 opacity-20">
+            <svg class="h-full w-full" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%">
+                <defs>
+                    <pattern id="pattern" width="40" height="40" patternUnits="userSpaceOnUse">
+                        <path d="M0 40L40 0H20L0 20M40 40V20L20 40" fill="currentColor" opacity="0.5" />
+                    </pattern>
+                </defs>
+                <rect width="100%" height="100%" fill="url(#pattern)"></rect>
+            </svg>
+        </div>
+        <div
+            class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 md:py-32 flex flex-col items-center text-center">
+            <span
+                class="px-4 py-1 bg-vino-700 rounded-full text-sm font-semibold mb-2 border border-vino-600 shadow-sm hover:bg-vino-600 transition cursor-default">
+                Universidad La Salle Bolivia
+            </span>
+            <h1
+                class="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-6 hover:scale-105 transition duration-500">
+                Psicología <br class="hidden md:block">
+            </h1>
+            <p class="text-lg md:text-xl max-w-3xl text-vino-100 mb-10">
+                Analiza críticamente la realidad educativa nacional e internacional desde una perspectiva histórica,
+                filosófica, sociocultural y ética.
+            </p>
+            <div
+                class="mt-16 w-full max-w-5xl mx-auto bg-white/10 backdrop-blur-md rounded-2xl shadow-xl overflow-hidden grid grid-cols-2 md:grid-cols-4 divide-x divide-y md:divide-y-0 divide-vino-600/30 border border-white/20 text-white">
+                <div class="p-6 text-center hover:bg-white/20 transition duration-300">
+                    <p class="text-xs text-vino-200 uppercase tracking-wide font-semibold mb-1">Sigla / Prerrequisito
+                    </p>
+                    <p class="text-xl md:text-2xl font-bold">EDU-325 / Admisión</p>
+                </div>
+                <div class="p-6 text-center hover:bg-white/20 transition duration-300">
+                    <p class="text-xs text-vino-200 uppercase tracking-wide font-semibold mb-1">Horas Semestre</p>
+                    <p class="text-xl md:text-2xl font-bold">120 hrs</p>
+                </div>
+                <div class="p-6 text-center hover:bg-white/20 transition duration-300">
+                    <p class="text-xs text-vino-200 uppercase tracking-wide font-semibold mb-1">Teóricas Presenciales
+                    </p>
+                    <p class="text-xl md:text-2xl font-bold">2 hrs / sem.</p>
+                </div>
+                <div class="p-6 text-center hover:bg-white/20 transition duration-300">
+                    <p class="text-xs text-vino-200 uppercase tracking-wide font-semibold mb-1">Práctica Independiente
+                        e Investigación
+                    </p>
+                    <p class="text-xl md:text-2xl font-bold">4 hrs / sem.</p>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- DOCENTE -->
+    <section id="docente" class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col lg:flex-row gap-12 items-center">
+                <div class="w-full lg:w-1/3 flex justify-center reveal">
+                    <div class="relative group">
+                        <div
+                            class="absolute inset-0 bg-vino-700 rounded-2xl transform translate-x-4 translate-y-4 opacity-50 group-hover:translate-x-2 group-hover:translate-y-2 transition duration-300">
+                        </div>
+                        <img src="ximena.jpeg"
+                            onerror="this.src='https://placehold.co/400x500/9b1c35/ffffff?text=Foto+Docente'"
+                            alt="Lic. Martha Bohorquez"
+                            class="relative z-10 rounded-2xl shadow-xl object-cover w-72 h-80 md:w-80 md:h-96 border-4 border-white group-hover:scale-[1.02] transition duration-300">
+                    </div>
+                </div>
+                <div class="w-full lg:w-2/3 reveal">
+                    <h2 class="text-3xl font-bold text-gray-900 mb-2">Docente de la Materia</h2>
+                    <h3 class="text-2xl text-vino-700 font-semibold mb-6">Lic. Ximena borda</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                        <div class="flex items-start gap-3 p-3 rounded-lg hover:bg-vino-50 transition duration-300">
+                            <i class="fa-solid fa-graduation-cap text-vino-600 mt-1"></i>
+                            <div>
+                                <h4 class="font-semibold text-gray-900">Formación</h4>
+                                <p class="text-gray-600 text-sm">Licenciada en Psicología</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-3 p-3 rounded-lg hover:bg-vino-50 transition duration-300">
+                            <i class="fa-solid fa-magnifying-glass text-vino-600 mt-1"></i>
+                            <div>
+                                <h4 class="font-semibold text-gray-900">Áreas de Investigación</h4>
+                                <p class="text-gray-600 text-sm">Terapia Conductual </p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-3 p-3 rounded-lg hover:bg-vino-50 transition duration-300">
+                            <i class="fa-solid fa-briefcase text-vino-600 mt-1"></i>
+                            <div>
+                                <h4 class="font-semibold text-gray-900">Experiencia</h4>
+                                <p class="text-gray-600 text-sm">Docencia universitaria por dos décadas</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-3 p-3 rounded-lg hover:bg-vino-50 transition duration-300">
+                            <i class="fa-solid fa-address-book text-vino-600 mt-1"></i>
+                            <div>
+                                <h4 class="font-semibold text-gray-900">Contacto</h4>
+                                <p class="text-gray-600 text-sm mb-1">
+                                    <i class="fa-solid fa-envelope text-vino-500 mr-1"></i>
+                                    <a href="mailto:marbohor@gmail.com"
+                                        class="text-vino-600 hover:text-vino-800 font-bold hover:underline transition">xborda@ulasalle.edu.bo</a>
+                                </p>
+                                <p class="text-gray-600 text-sm">
+                                    <i class="fa-brands fa-whatsapp text-green-600 mr-1 text-lg"></i>
+                                    <a href="https://wa.me/59171581997" target="_blank"
+                                        class="text-vino-600 hover:text-vino-800 font-bold hover:underline transition">71581997</a>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div
+                        class="bg-vino-50 p-6 rounded-xl border border-vino-100 hover:bg-vino-100 transition duration-300 hover:shadow-md cursor-default">
+                        <h4 class="font-bold text-vino-900 mb-2 flex items-center gap-2">
+                            <i class="fa-solid fa-bullseye"></i> Justificación de la Materia
+                        </h4>
+                        <p class="text-gray-700 text-sm leading-relaxed">
+                           La materia de Psicología permite al estudiante situar su ejercicio profesional
+                           dentro de una tradición histórica y epistemológica, favoreciendo una práctica
+                           fundamentada, plural y contextualizada con ética profesional. Además, el estudiante
+                           podrá comprender los hitos más importantes en el desarrollo de la psicología como
+                           ciencia de estudio y su abordaje identificando los dilemas éticos acordes a los
+                           principios de la profesión.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- COMPETENCIAS -->
+    <section id="competencias" class="py-20 bg-vino-50 relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16 reveal">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Competencias de la Materia</h2>
+                <div class="h-1 w-24 bg-vino-600 mx-auto rounded"></div>
+                <p class="mt-4 text-gray-600 max-w-2xl mx-auto">Perfil y objetivos de aprendizaje fundamentales para el
+                    desarrollo del estudiante durante el semestre.</p>
+            </div>
+            <div class="flex flex-col gap-8 mb-12 reveal">
+                <div
+                    class="bg-white rounded-2xl shadow-sm border border-vino-100 hover:shadow-lg hover:border-vino-300 transition duration-300 overflow-hidden flex flex-col md:flex-row group">
+                    <div
+                        class="p-8 md:w-1/2 flex flex-col justify-center group-hover:bg-vino-50 transition duration-300">
+                        <h3 class="text-xl font-bold text-vino-800 mb-3 flex items-center gap-2">
+                            <i class="fa-solid fa-earth-americas text-2xl"></i> Competencia Global del Área
+                        </h3>
+                        <p class="text-gray-700 text-sm leading-relaxed">
+                            Comprende y aplica los fundamentos de la psicología científica, del desarrollo
+                            humano y del aprendizaje, para interpretar y atender las características
+                            individuales de los estudiantes, favoreciendo su desarrollo integral en el
+                            proceso educativo.
+                        </p>
+                    </div>
+                    <div class="md:w-1/2 h-64 md:h-auto relative overflow-hidden">
+                        <img src="area.png" alt="Competencia Global"
+                            class="absolute inset-0 w-full h-full object-cover transform group-hover:scale-105 transition duration-700">
+                    </div>
+                </div>
+                <div
+                    class="bg-white rounded-2xl shadow-sm border border-vino-100 hover:shadow-lg hover:border-vino-300 transition duration-300 overflow-hidden flex flex-col md:flex-row-reverse group">
+                    <div
+                        class="p-8 md:w-1/2 flex flex-col justify-center group-hover:bg-vino-50 transition duration-300">
+                        <h3 class="text-xl font-bold text-vino-800 mb-3 flex items-center gap-2">
+                            <i class="fa-solid fa-microscope text-2xl"></i> Competencia de la Asignatura
+                        </h3>
+                        <p class="text-gray-700 text-sm leading-relaxed mb-4">
+                            Analiza los fundamentos teóricos y científicos de la Psicología, comprendiendo
+                            los procesos biológicos, cognitivos, emocionales y sociales que influyen en el
+                            comportamiento humano y en el aprendizaje, para aplicar dichos conocimientos
+                            en contextos educativos de manera ética, crítica e inclusiva.
+                        </p>
+                        <div class="space-y-3 mt-4 pt-4 border-t border-gray-100">
+                            <div class="flex gap-2 text-sm"><span
+                                    class="font-bold text-vino-700 w-24 shrink-0">Conceptual:</span> <span
+                                    class="text-gray-600">Comprende los fundamentos filosóficos y científicos
+                                    que permitieron la emergencia de la psicología como disciplina autónoma.</span></div>
+                            <div class="flex gap-2 text-sm"><span
+                                    class="font-bold text-vino-700 w-24 shrink-0">Procedimental:</span> <span
+                                    class="text-gray-600">Relaciona los principales modelos psicológicos
+                                    contemporáneos con sus antecedentes históricos</span></div>
+                            <div class="flex gap-2 text-sm"><span
+                                    class="font-bold text-vino-700 w-24 shrink-0">Actitudinal:</span> <span
+                                    class="text-gray-600">Promueve una actitud crítica y reflexiva ante
+                                    la evolución del pensamiento psicológico y su aplicación actual.</span></div>
+                        </div>
+                    </div>
+                    <div class="md:w-1/2 h-64 md:h-auto relative overflow-hidden">
+                        <img src="asignatura.png" alt="Competencia de la Asignatura"
+                            class="absolute inset-0 w-full h-full object-cover transform group-hover:scale-105 transition duration-700">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- TEMARIO -->
+    <section id="temario" class="py-20 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16 reveal">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Contenido de la Materia</h2>
+                <div class="h-1 w-24 bg-vino-600 mx-auto rounded"></div>
+                <p class="mt-4 text-gray-600 max-w-2xl mx-auto">Explora los 10 temas fundamentales. <span
+                        class="text-vino-700 font-semibold">Haz clic en cada subtema</span> para ver su criterio de
+                    desempeño.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+
+                <!-- TEMA 1 -->
+                <div class="glass-card rounded-2xl p-6 flex flex-col h-full relative group reveal overflow-visible">
+                    <div
+                        class="absolute top-0 right-0 bg-vino-700 text-white font-bold px-4 py-1 rounded-bl-xl text-sm z-10 transition-colors group-hover:bg-vino-900">
+                        TEMA 1</div>
+                    <div class="flex flex-col items-center justify-center text-center pt-4 mb-4">
+                        <div
+                            class="w-16 h-16 bg-vino-100 text-vino-700 rounded-full flex items-center justify-center text-2xl mb-4 transition-all group-hover:scale-110 group-hover:bg-vino-200">
+                            <i class="fa-solid fa-landmark"></i>
+                        </div>
+                        <h3 class="font-bold text-lg text-gray-900 px-2 group-hover:text-vino-800 transition-colors">La
+                            INTRODUCCIÓN A LA PSICOLOGÍA</h3>
+                    </div>
+                    <ul class="text-sm text-gray-600 space-y-1 mb-5 text-left w-full border-t border-vino-100 pt-4">
+                        <li class="subtema-item"
+                            data-criterio="Describe las caracteristicas, finalidades y métodos educativos del antiguo Egipto mediante un mapa conceptual fundamentado.">
+                            <span class="flex items-center gap-2"><i
+                                    class="fa-solid fa-angle-right text-vino-500"></i>Subtema 1.1 Concepto, objeto y campos de estudio de la Psicología<i
+                                    class="fa-solid fa-circle-info criterio-hint"></i></span>
+                            <div class="criterio-panel">
+                                <div class="criterio-label"><i class="fa-solid fa-star-half-stroke mr-1"></i>Criterio de
+                                    Desempeño</div>
+                                <div class="criterio-text">Explica con precisión el concepto, objeto y campos de estudio de la Psicología.</div>
+                            </div>
+                        </li>
+                        <li class="subtema-item open-left"
+                            data-criterio="Explica el papel de las escuelas y los escribas en el desarrollo de la educación mesopotámica a partir del analisis de fuentes históricas.">
+                            <span class="flex items-center gap-2"><i
+                                    class="fa-solid fa-angle-right text-vino-500"></i>Subtema 1.2 Evolución histórica del
+                                    pensamiento psicológico.<i class="fa-solid fa-circle-info criterio-hint"></i></span>
+                            <div class="criterio-panel">
+                                <div class="criterio-label"><i class="fa-solid fa-star-half-stroke mr-1"></i>Criterio de
+                                    Desempeño</div>
+                                <div class="criterio-text">Analiza la evolución histórica de la Psicología, identificando
+                                    los principales acontecimientos, enfoques y aportes que contribuyeron a su desarrollo
+                                    como disciplina científica.
+                                </div>
+                            </div>
+                        </li>
+                        <li class="subtema-item"
+                            data-criterio="Analiza la influencia del confucianismo en la organización educativa de la civilización china.">
+                            <span class="flex items-center gap-2"><i
+                                    class="fa-solid fa-angle-right text-vino-500"></i>Subtema 1.3 Principales escuelas psicológicas.<i
+                                    class="fa-solid fa-circle-info criterio-hint"></i></span>
+                            <div class="criterio-panel">
+                                <div class="criterio-label"><i class="fa-solid fa-star-half-stroke mr-1"></i>Criterio de
+                                    Desempeño</div>
+                                <div class="criterio-text">Compara las principales escuelas psicológicas, reconociendo
+                                    sus fundamentos teóricos, representantes y contribuciones al estudio de la conducta humana</div>
+                            </div>
+                        </li>
+                        <li class="subtema-item open-left"
+                            data-criterio="Compara los principios educativos de la India antigua con los de otras civilizaciones orientales mediante un cuadro comparativo.">
+                            <span class="flex items-center gap-2"><i
+                                    class="fa-solid fa-angle-right text-vino-500"></i>Subtema 1.4 Áreas de aplicación de la Psicología en la educación.<i
+                                    class="fa-solid fa-circle-info criterio-hint"></i></span>
+                            <div class="criterio-panel">
+                                <div class="criterio-label"><i class="fa-solid fa-star-half-stroke mr-1"></i>Criterio de
+                                    Desempeño</div>
+                                <div class="criterio-text">Relaciona los aportes de la Psicología con los procesos
+                                    educativos, identificando aplicaciones pertinentes para el aprendizaje, la enseñanza
+                                    y el desarrollo integral del estudiante</div>
+                            </div>
+                        </li>
+                    </ul>
+                    <a href="https://www.ulasalle.edu.bo" target="_blank"
+                        class="mt-auto w-full bg-vino-700 hover:bg-vino-900 text-white font-semibold py-2.5 px-4 rounded-lg transition duration-300 flex items-center justify-center gap-2 hover:shadow-lg">
+                        <i class="fa-solid fa-file-pdf"></i> Dossier de Lecturas
+                    </a>
+                </div>
+
+                <!-- TEMA 2 -->
+                <div class="glass-card rounded-2xl p-6 flex flex-col h-full relative group reveal overflow-visible">
+                    <div
+                        class="absolute top-0 right-0 bg-vino-700 text-white font-bold px-4 py-1 rounded-bl-xl text-sm z-10 transition-colors group-hover:bg-vino-900">
+                        TEMA 2</div>
+                    <div class="flex flex-col items-center justify-center text-center pt-4 mb-4">
+                        <div
+                            class="w-16 h-16 bg-vino-100 text-vino-700 rounded-full flex items-center justify-center text-2xl mb-4 transition-all group-hover:scale-110 group-hover:bg-vino-200">
+                            <i class="fa-solid fa-columns"></i>
+                        </div>
+                        <h3 class="font-bold text-lg text-gray-900 px-2 group-hover:text-vino-800 transition-colors">
+                            PROCESOS COGNITIVOS </h3>
+                    </div>
+                    <ul class="text-sm text-gray-600 space-y-1 mb-5 text-left w-full border-t border-vino-100 pt-4">
+                        <li class="subtema-item"
+                            data-criterio="Identifica las caracteristicas formativas del modelo espartano mediante el analisis de textos historicos.">
+                            <span class="flex items-center gap-2"><i
+                                    class="fa-solid fa-angle-right text-vino-500"></i>Subtema 2.1. Sensación
+                                    y percepción<i class="fa-solid fa-circle-info criterio-hint"></i></span>
+                            <div class="criterio-panel">
+                                <div class="criterio-label"><i class="fa-solid fa-star-half-stroke mr-1"></i>Criterio de
+                                    Desempeño</div>
+                                <div class="criterio-text">Diferencia los procesos de sensación y percepción, explicando
+                                    su influencia en la interpretación de los estímulos y en la construcción del conocimiento.</div>
+                            </div>
+                        </li>
+                        <li class="subtema-item open-left"
+                            data-criterio="Explica los ideales educativos atenienses y su aporte a la formacion ciudadana.">
+                            <span class="flex items-center gap-2"><i
+                                    class="fa-solid fa-angle-right text-vino-500"></i>Subtema 2.2. Atención y concentración.<i class="fa-solid fa-circle-info criterio-hint"></i></span>
+                            <div class="criterio-panel">
+                                <div class="criterio-label"><i class="fa-solid fa-star-half-stroke mr-1"></i>Criterio de
+                                    Desempeño</div>
+                                <div class="criterio-text">Analiza los procesos de atención y concentración, identificando
+                                    factores que favorecen o dificultan el aprendizaje en distintos contextos educativos.</div>
+                            </div>
+                        </li>
+                        <li class="subtema-item"
+                            data-criterio="Analiza las contribuciones educativas de Socrates, Platon y Aristoteles en un ensayo crítico.">
+                            <span class="flex items-center gap-2"><i
+                                    class="fa-solid fa-angle-right text-vino-500"></i>Subtema 2.3. Memoria y tipos de memoria.<i class="fa-solid fa-circle-info criterio-hint"></i></span>
+                            <div class="criterio-panel">
+                                <div class="criterio-label"><i class="fa-solid fa-star-half-stroke mr-1"></i>Criterio de
+                                    Desempeño</div>
+                                <div class="criterio-text">Describe el funcionamiento de la memoria y sus diferentes tipos, relacionándolos con los procesos de adquisición, almacenamiento y recuperación de la información.</div>
+                            </div>
+                        </li>
+                        <li class="subtema-item open-left"
+                            data-criterio="Establece semejanzas y diferencias entre los modelos educativos griego y romano mediante un estudio de caso comparativo.">
+                            <span class="flex items-center gap-2"><i
+                                    class="fa-solid fa-angle-right text-vino-500"></i>Subtema 2.4. Pensamiento, razonamiento y resolución de problemas<i
+                                    class="fa-solid fa-circle-info criterio-hint"></i></span>
+                            <div class="criterio-panel">
+                                <div class="criterio-label"><i class="fa-solid fa-star-half-stroke mr-1"></i>Criterio de
+                                    Desempeño</div>
+                                <div class="criterio-text">Aplica estrategias de pensamiento y razonamiento para la resolución de problemas, demostrando capacidad de análisis, reflexión y toma de decisiones.</div>
+                            </div>
+                        </li>
+                    </ul>
+                    <a href="https://www.ulasalle.edu.bo" target="_blank"
+                        class="mt-auto w-full bg-vino-700 hover:bg-vino-900 text-white font-semibold py-2.5 px-4 rounded-lg transition duration-300 flex items-center justify-center gap-2 hover:shadow-lg">
+                        <i class="fa-solid fa-file-pdf"></i> Dossier de Lecturas
+                    </a>
+                </div>
+
+                <!-- TEMA 3 -->
+                <div class="glass-card rounded-2xl p-6 flex flex-col h-full relative group reveal overflow-visible">
+                    <div
+                        class="absolute top-0 right-0 bg-vino-700 text-white font-bold px-4 py-1 rounded-bl-xl text-sm z-10 transition-colors group-hover:bg-vino-900">
+                        TEMA 3</div>
+                    <div class="flex flex-col items-center justify-center text-center pt-4 mb-4">
+                        <div
+                            class="w-16 h-16 bg-vino-100 text-vino-700 rounded-full flex items-center justify-center text-2xl mb-4 transition-all group-hover:scale-110 group-hover:bg-vino-200">
+                            <i class="fa-solid fa-chess-rook"></i>
+                        </div>
+                        <h3 class="font-bold text-lg text-gray-900 px-2 group-hover:text-vino-800 transition-colors">
+                            APRENDIZAJE Y CONDUCTA</h3>
+                    </div>
+                    <ul class="text-sm text-gray-600 space-y-1 mb-5 text-left w-full border-t border-vino-100 pt-4">
+                        <li class="subtema-item"
+                            data-criterio="Explica la función educativa de los monasterios a traves de una línea de tiempo.">
+                            <span class="flex items-center gap-2"><i
+                                    class="fa-solid fa-angle-right text-vino-500"></i>Subtema 3.1. Concepto y características del aprendizaje<i
+                                    class="fa-solid fa-circle-info criterio-hint"></i></span>
+                            <div class="criterio-panel">
+                                <div class="criterio-label"><i class="fa-solid fa-star-half-stroke mr-1"></i>Criterio de
+                                    Desempeño</div>
+                                <div class="criterio-text">Explica el concepto y las características del aprendizaje, identificando los factores que intervienen en su desarrollo.</div>
+                            </div>
+                        </li>
+                        <li class="subtema-item open-left"
+                            data-criterio="Analiza los fundamentos de la escolastica y su impacto en la educación medieval.">
+                            <span class="flex items-center gap-2"><i
+                                    class="fa-solid fa-angle-right text-vino-500"></i>Subtema 3.2. Condicionamiento clásico y operante.<i
+                                    class="fa-solid fa-circle-info criterio-hint"></i></span>
+                            <div class="criterio-panel">
+                                <div class="criterio-label"><i class="fa-solid fa-star-half-stroke mr-1"></i>Criterio de
+                                    Desempeño</div>
+                                <div class="criterio-text">Distingue los principios del condicionamiento clásico y operante, analizando su influencia en la adquisición y modificación de conductas.</div>
+                            </div>
+                        </li>
+                        <li class="subtema-item"
+                            data-criterio="Describe la organización y funciones de las primeras universidades europeas.">
+                            <span class="flex items-center gap-2"><i
+                                    class="fa-solid fa-angle-right text-vino-500"></i>Subtema 3.3. Aprendizaje social y observacional.<i class="fa-solid fa-circle-info criterio-hint"></i></span>
+                            <div class="criterio-panel">
+                                <div class="criterio-label"><i class="fa-solid fa-star-half-stroke mr-1"></i>Criterio de
+                                    Desempeño</div>
+                                <div class="criterio-text">Analiza los procesos de aprendizaje social y observacional, reconociendo el papel de la observación, la imitación y el modelado en el comportamiento humano.</div>
+                            </div>
+                        </li>
+                        <li class="subtema-item open-left"
+                            data-criterio="Relaciona la estructura social medieval con las oportunidades educativas existentes.">
+                            <span class="flex items-center gap-2"><i
+                                    class="fa-solid fa-angle-right text-vino-500"></i>Subtema 3.4. Aplicaciones de las teorías del aprendizaje en educación.<i class="fa-solid fa-circle-info criterio-hint"></i></span>
+                            <div class="criterio-panel">
+                                <div class="criterio-label"><i class="fa-solid fa-star-half-stroke mr-1"></i>Criterio de
+                                    Desempeño</div>
+                                <div class="criterio-text">Aplica fundamentos de las teorías del aprendizaje en el diseño de estrategias educativas orientadas a mejorar los procesos de enseñanza y aprendizaje.</div>
+                            </div>
+                        </li>
+                    </ul>
+                    <a href="https://www.ulasalle.edu.bo" target="_blank"
+                        class="mt-auto w-full bg-vino-700 hover:bg-vino-900 text-white font-semibold py-2.5 px-4 rounded-lg transition duration-300 flex items-center justify-center gap-2 hover:shadow-lg">
+                        <i class="fa-solid fa-file-pdf"></i> Dossier de Lecturas
+                    </a>
+                </div>
+
+                <!-- TEMA 4 -->
+                <div class="glass-card rounded-2xl p-6 flex flex-col h-full relative group reveal overflow-visible">
+                    <div
+                        class="absolute top-0 right-0 bg-vino-700 text-white font-bold px-4 py-1 rounded-bl-xl text-sm z-10 transition-colors group-hover:bg-vino-900">
+                        TEMA 4</div>
+                    <div class="flex flex-col items-center justify-center text-center pt-4 mb-4">
+                        <div
+                            class="w-16 h-16 bg-vino-100 text-vino-700 rounded-full flex items-center justify-center text-2xl mb-4 transition-all group-hover:scale-110 group-hover:bg-vino-200">
+                            <i class="fa-solid fa-palette"></i>
+                        </div>
+                        <h3 class="font-bold text-lg text-gray-900 px-2 group-hover:text-vino-800 transition-colors">
+                            MOTIVACIÓN Y EMOCIÓN</h3>
+                    </div>
+                    <ul class="text-sm text-gray-600 space-y-1 mb-5 text-left w-full border-t border-vino-100 pt-4">
+                        <li class="subtema-item"
+                            data-criterio="Identifica los principios humanistas y su influencia en las practicas educativas.">
+                            <span class="flex items-center gap-2"><i
+                                    class="fa-solid fa-angle-right text-vino-500"></i>Subtema 4.1. Conceptualización de la motivación.<i class="fa-solid fa-circle-info criterio-hint"></i></span>
+                            <div class="criterio-panel">
+                                <div class="criterio-label"><i class="fa-solid fa-star-half-stroke mr-1"></i>Criterio de
+                                    Desempeño</div>
+                                <div class="criterio-text">Explica el concepto de motivación y su importancia en el comportamiento humano y el rendimiento académico.</div>
+                            </div>
+                        </li>
+                        <li class="subtema-item open-left"
+                            data-criterio="Explica los cambios producidos en la educacion renacentista mediante el analisis de fuentes historicas.">
+                            <span class="flex items-center gap-2"><i
+                                    class="fa-solid fa-angle-right text-vino-500"></i>Subtema 4.2. Teorías motivacionales contemporáneas.<i class="fa-solid fa-circle-info criterio-hint"></i></span>
+                            <div class="criterio-panel">
+                                <div class="criterio-label"><i class="fa-solid fa-star-half-stroke mr-1"></i>Criterio de
+                                    Desempeño</div>
+                                <div class="criterio-text">Analiza las principales teorías motivacionales contemporáneas, relacionándolas con situaciones educativas concretas</div>
+                            </div>
+                        </li>
+                        <li class="subtema-item"
+                            data-criterio="Analiza el impacto de la Reforma en el acceso y difusión de la educación.">
+                            <span class="flex items-center gap-2"><i
+                                    class="fa-solid fa-angle-right text-vino-500"></i>Subtema 4.3. Naturaleza y funciones de las emociones.<i
+                                    class="fa-solid fa-circle-info criterio-hint"></i></span>
+                            <div class="criterio-panel">
+                                <div class="criterio-label"><i class="fa-solid fa-star-half-stroke mr-1"></i>Criterio de
+                                    Desempeño</div>
+                                <div class="criterio-text">Describe la naturaleza y funciones de las emociones, reconociendo su influencia en el desarrollo personal y social.</div>
+                            </div>
+                        </li>
+                        <li class="subtema-item open-left"
+                            data-criterio="Evalua la contribucion de la Contrarreforma al fortalecimiento de instituciones educativas.">
+                            <span class="flex items-center gap-2"><i
+                                    class="fa-solid fa-angle-right text-vino-500"></i>Subtema 4.4. Motivación y emociones en los procesos educativos<i class="fa-solid fa-circle-info criterio-hint"></i></span>
+                            <div class="criterio-panel">
+                                <div class="criterio-label"><i class="fa-solid fa-star-half-stroke mr-1"></i>Criterio de
+                                    Desempeño</div>
+                                <div class="criterio-text">Evalúa el impacto de la motivación y las emociones en el aprendizaje, proponiendo estrategias que favorezcan ambientes educativos positivos.</div>
+                            </div>
+                        </li>
+                    </ul>
+                    <a href="https://www.ulasalle.edu.bo" target="_blank"
+                        class="mt-auto w-full bg-vino-700 hover:bg-vino-900 text-white font-semibold py-2.5 px-4 rounded-lg transition duration-300 flex items-center justify-center gap-2 hover:shadow-lg">
+                        <i class="fa-solid fa-file-pdf"></i> Dossier de Lecturas
+                    </a>
+                </div>
+
+                <!-- TEMA 5 -->
+                <div class="glass-card rounded-2xl p-6 flex flex-col h-full relative group reveal overflow-visible">
+                    <div
+                        class="absolute top-0 right-0 bg-vino-700 text-white font-bold px-4 py-1 rounded-bl-xl text-sm z-10 transition-colors group-hover:bg-vino-900">
+                        TEMA 5</div>
+                    <div class="flex flex-col items-center justify-center text-center pt-4 mb-4">
+                        <div
+                            class="w-16 h-16 bg-vino-100 text-vino-700 rounded-full flex items-center justify-center text-2xl mb-4 transition-all group-hover:scale-110 group-hover:bg-vino-200">
+                            <i class="fa-solid fa-lightbulb"></i>
+                        </div>
+                        <h3 class="font-bold text-lg text-gray-900 px-2 group-hover:text-vino-800 transition-colors">
+                            PERSONALIDAD </h3>
+                    </div>
+                    <ul class="text-sm text-gray-600 space-y-1 mb-5 text-left w-full border-t border-vino-100 pt-4">
+                        <li class="subtema-item"
+                            data-criterio="Explica la relacion entre las ideas ilustradas y el surgimiento de nuevos modelos educativos.">
+                            <span class="flex items-center gap-2"><i
+                                    class="fa-solid fa-angle-right text-vino-500"></i>Subtema 5.1. Concepto y estructura de la personalidad<i class="fa-solid fa-circle-info criterio-hint"></i></span>
+                            <div class="criterio-panel">
+                                <div class="criterio-label"><i class="fa-solid fa-star-half-stroke mr-1"></i>Criterio de
+                                    Desempeño</div>
+                                <div class="criterio-text">Explica los componentes y características de la personalidad, comprendiendo su influencia en el comportamiento individual</div>
+                            </div>
+                        </li>
+                        <li class="subtema-item open-left"
+                            data-criterio="Interpreta los aportes pedagogicos de Rousseau mediante el analisis de textos.">
+                            <span class="flex items-center gap-2"><i
+                                    class="fa-solid fa-angle-right text-vino-500"></i>Subtema 5.2. Factores biológicos y ambientales de la personalidad<i class="fa-solid fa-circle-info criterio-hint"></i></span>
+                            <div class="criterio-panel">
+                                <div class="criterio-label"><i class="fa-solid fa-star-half-stroke mr-1"></i>Criterio de
+                                    Desempeño</div>
+                                <div class="criterio-text">Analiza la interacción de los factores biológicos y ambientales en la formación y desarrollo de la personalidad.</div>
+                            </div>
+                        </li>
+                        <li class="subtema-item"
+                            data-criterio="Describe los principios metodologicos de Pestalozzi y su vigencia actual.">
+                            <span class="flex items-center gap-2"><i
+                                    class="fa-solid fa-angle-right text-vino-500"></i>Subtema 5.3. Teorías de la personalidad <i class="fa-solid fa-circle-info criterio-hint"></i></span>
+                            <div class="criterio-panel">
+                                <div class="criterio-label"><i class="fa-solid fa-star-half-stroke mr-1"></i>Criterio de
+                                    Desempeño</div>
+                                <div class="criterio-text">Compara las principales teorías de la personalidad, identificando sus bases conceptuales y aportes al conocimiento psicológico.</div>
+                            </div>
+                        </li>
+                        <li class="subtema-item open-left"
+                            data-criterio="Compara las propuestas pedagogicas modernas a traves de mapas conceptuales.">
+                            <span class="flex items-center gap-2"><i
+                                    class="fa-solid fa-angle-right text-vino-500"></i>Subtema 5.4. Evaluación y desarrollo de la personalidad.<i class="fa-solid fa-circle-info criterio-hint"></i></span>
+                            <div class="criterio-panel">
+                                <div class="criterio-label"><i class="fa-solid fa-star-half-stroke mr-1"></i>Criterio de
+                                    Desempeño</div>
+                                <div class="criterio-text">Reconoce métodos de evaluación y procesos de desarrollo de la personalidad, valorando su aplicación en contextos educativos..</div>
+                            </div>
+                        </li>
+                    </ul>
+                    <a href="https://www.ulasalle.edu.bo" target="_blank"
+                        class="mt-auto w-full bg-vino-700 hover:bg-vino-900 text-white font-semibold py-2.5 px-4 rounded-lg transition duration-300 flex items-center justify-center gap-2 hover:shadow-lg">
+                        <i class="fa-solid fa-file-pdf"></i> Dossier de Lecturas
+                    </a>
+                </div>
+
+                <!-- TEMA 6 -->
+                <div class="glass-card rounded-2xl p-6 flex flex-col h-full relative group reveal overflow-visible">
+                    <div
+                        class="absolute top-0 right-0 bg-vino-700 text-white font-bold px-4 py-1 rounded-bl-xl text-sm z-10 transition-colors group-hover:bg-vino-900">
+                        TEMA 6</div>
+                    <div class="flex flex-col items-center justify-center text-center pt-4 mb-4">
+                        <div
+                            class="w-16 h-16 bg-vino-100 text-vino-700 rounded-full flex items-center justify-center text-2xl mb-4 transition-all group-hover:scale-110 group-hover:bg-vino-200">
+                            <i class="fa-solid fa-industry"></i>
+                        </div>
+                        <h3 class="font-bold text-lg text-gray-900 px-2 group-hover:text-vino-800 transition-colors">
+                            SALUD MENTAL Y BIENESTAR</h3>
+                    </div>
+                    <ul class="text-sm text-gray-600 space-y-1 mb-5 text-left w-full border-t border-vino-100 pt-4">
+                        <li class="subtema-item"
+                            data-criterio="Relaciona los cambios economicos con las necesidades educativas emergentes.">
+                            <span class="flex items-center gap-2"><i
+                                    class="fa-solid fa-angle-right text-vino-500"></i>Subtema 6.1. Contexto social y
+                                económico<i class="fa-solid fa-circle-info criterio-hint"></i></span>
+                            <div class="criterio-panel">
+                                <div class="criterio-label"><i class="fa-solid fa-star-half-stroke mr-1"></i>Criterio de
+                                    Desempeño</div>
+                                <div class="criterio-text">Relaciona los cambios económicos con las necesidades
+                                    educativas emergentes.</div>
+                            </div>
+                        </li>
+                        <li class="subtema-item open-left"
+                            data-criterio="Explica las razones de la masificacion educativa durante la industrializacion.">
+                            <span class="flex items-center gap-2"><i
+                                    class="fa-solid fa-angle-right text-vino-500"></i>Subtema 6.2. Expansión de la
+                                escuela pública<i class="fa-solid fa-circle-info criterio-hint"></i></span>
+                            <div class="criterio-panel">
+                                <div class="criterio-label"><i class="fa-solid fa-star-half-stroke mr-1"></i>Criterio de
+                                    Desempeño</div>
+                                <div class="criterio-text">Explica las razones de la masificación educativa durante la
+                                    industrialización.</div>
+                            </div>
+                        </li>
+                        <li class="subtema-item"
+                            data-criterio="Analiza el vinculo entre educacion, productividad y desarrollo industrial.">
+                            <span class="flex items-center gap-2"><i
+                                    class="fa-solid fa-angle-right text-vino-500"></i>Subtema 6.3. Educación y formación
+                                para el trabajo<i class="fa-solid fa-circle-info criterio-hint"></i></span>
+                            <div class="criterio-panel">
+                                <div class="criterio-label"><i class="fa-solid fa-star-half-stroke mr-1"></i>Criterio de
+                                    Desempeño</div>
+                                <div class="criterio-text">Analiza el vínculo entre educación, productividad y
+                                    desarrollo industrial.</div>
+                            </div>
+                        </li>
+                        <li class="subtema-item open-left"
+                            data-criterio="Argumenta ventajas y limitaciones de estos modelos mediante un debate academico.">
+                            <span class="flex items-center gap-2"><i
+                                    class="fa-solid fa-angle-right text-vino-500"></i>Subtema 6.4. Críticas a los
+                                modelos industrializados<i class="fa-solid fa-circle-info criterio-hint"></i></span>
+                            <div class="criterio-panel">
+                                <div class="criterio-label"><i class="fa-solid fa-star-half-stroke mr-1"></i>Criterio de
+                                    Desempeño</div>
+                                <div class="criterio-text">Argumenta ventajas y limitaciones de estos modelos mediante
+                                    un debate academico.</div>
+                            </div>
+                        </li>
+                    </ul>
+                    <a href="https://www.ulasalle.edu.bo" target="_blank"
+                        class="mt-auto w-full bg-vino-700 hover:bg-vino-900 text-white font-semibold py-2.5 px-4 rounded-lg transition duration-300 flex items-center justify-center gap-2 hover:shadow-lg">
+                        <i class="fa-solid fa-file-pdf"></i> Dossier de Lecturas
+                    </a>
+                </div>
+
+                <!-- TEMA 7 -->
+                <div class="glass-card rounded-2xl p-6 flex flex-col h-full relative group reveal overflow-visible">
+                    <div
+                        class="absolute top-0 right-0 bg-vino-700 text-white font-bold px-4 py-1 rounded-bl-xl text-sm z-10 transition-colors group-hover:bg-vino-900">
+                        TEMA 7</div>
+                    <div class="flex flex-col items-center justify-center text-center pt-4 mb-4">
+                        <div
+                            class="w-16 h-16 bg-vino-100 text-vino-700 rounded-full flex items-center justify-center text-2xl mb-4 transition-all group-hover:scale-110 group-hover:bg-vino-200">
+                            <i class="fa-solid fa-sun"></i>
+                        </div>
+                        <h3 class="font-bold text-lg text-gray-900 px-2 group-hover:text-vino-800 transition-colors">
+                            EMPIRISMO, RACIONALISMO Y POSITIVISMO</h3>
+                    </div>
+                    <ul class="text-sm text-gray-600 space-y-1 mb-5 text-left w-full border-t border-vino-100 pt-4">
+                        <li class="subtema-item"
+                            data-criterio="Describe las formas de transmision del conocimiento en las culturas originarias.">
+                            <span class="flex items-center gap-2"><i
+                                    class="fa-solid fa-angle-right text-vino-500"></i>Subtema 7.1. Educación en las
+                                culturas preincaicas<i class="fa-solid fa-circle-info criterio-hint"></i></span>
+                            <div class="criterio-panel">
+                                <div class="criterio-label"><i class="fa-solid fa-star-half-stroke mr-1"></i>Criterio de
+                                    Desempeño</div>
+                                <div class="criterio-text">Describe las formas de transmisión del conocimiento en las
+                                    culturas originarias.</div>
+                            </div>
+                        </li>
+                        <li class="subtema-item open-left"
+                            data-criterio="Explica las caracteristicas y finalidades de la educacion incaica.">
+                            <span class="flex items-center gap-2"><i
+                                    class="fa-solid fa-angle-right text-vino-500"></i>Subtema 7.2. Educación durante el
+                                Imperio Inca<i class="fa-solid fa-circle-info criterio-hint"></i></span>
+                            <div class="criterio-panel">
+                                <div class="criterio-label"><i class="fa-solid fa-star-half-stroke mr-1"></i>Criterio de
+                                    Desempeño</div>
+                                <div class="criterio-text">Explica las características y finalidades de la educación
+                                    incaica.</div>
+                            </div>
+                        </li>
+                        <li class="subtema-item"
+                            data-criterio="Analiza el papel de la Iglesia y las instituciones coloniales en la educacion.">
+                            <span class="flex items-center gap-2"><i
+                                    class="fa-solid fa-angle-right text-vino-500"></i>Subtema 7.3. La educación en la
+                                época colonial<i class="fa-solid fa-circle-info criterio-hint"></i></span>
+                            <div class="criterio-panel">
+                                <div class="criterio-label"><i class="fa-solid fa-star-half-stroke mr-1"></i>Criterio de
+                                    Desempeño</div>
+                                <div class="criterio-text">Analiza el papel de la Iglesia y las instituciones coloniales
+                                    en la educación.</div>
+                            </div>
+                        </li>
+                        <li class="subtema-item open-left"
+                            data-criterio="Evalua los efectos de la educacion colonial sobre las poblaciones indigenas mediante un ensayo critico.">
+                            <span class="flex items-center gap-2"><i
+                                    class="fa-solid fa-angle-right text-vino-500"></i>Subtema 7.4. Impacto cultural de
+                                la educación colonial<i class="fa-solid fa-circle-info criterio-hint"></i></span>
+                            <div class="criterio-panel">
+                                <div class="criterio-label"><i class="fa-solid fa-star-half-stroke mr-1"></i>Criterio de
+                                    Desempeño</div>
+                                <div class="criterio-text">Evalúa los efectos de la educación colonial sobre las
+                                    poblaciones indígenas mediante un ensayo crítico.</div>
+                            </div>
+                        </li>
+                    </ul>
+                    <a href="https://www.ulasalle.edu.bo" target="_blank"
+                        class="mt-auto w-full bg-vino-700 hover:bg-vino-900 text-white font-semibold py-2.5 px-4 rounded-lg transition duration-300 flex items-center justify-center gap-2 hover:shadow-lg">
+                        <i class="fa-solid fa-file-pdf"></i> Dossier de Lecturas
+                    </a>
+                </div>
+
+                <!-- TEMA 8 -->
+                <div class="glass-card rounded-2xl p-6 flex flex-col h-full relative group reveal overflow-visible">
+                    <div
+                        class="absolute top-0 right-0 bg-vino-700 text-white font-bold px-4 py-1 rounded-bl-xl text-sm z-10 transition-colors group-hover:bg-vino-900">
+                        TEMA 8</div>
+                    <div class="flex flex-col items-center justify-center text-center pt-4 mb-4">
+                        <div
+                            class="w-16 h-16 bg-vino-100 text-vino-700 rounded-full flex items-center justify-center text-2xl mb-4 transition-all group-hover:scale-110 group-hover:bg-vino-200">
+                            <i class="fa-solid fa-flag"></i>
+                        </div>
+                        <h3 class="font-bold text-lg text-gray-900 px-2 group-hover:text-vino-800 transition-colors">
+                            NACIMIENTO DE LA PSICOLOGÍA CIENTÍFICA</h3>
+                    </div>
+                    <ul class="text-sm text-gray-600 space-y-1 mb-5 text-left w-full border-t border-vino-100 pt-4">
+                        <li class="subtema-item"
+                            data-criterio="Identifica los principales cambios educativos asociados al proceso de independencia.">
+                            <span class="flex items-center gap-2"><i
+                                    class="fa-solid fa-angle-right text-vino-500"></i>Subtema 8.1. Educación en el
+                                periodo independentista<i class="fa-solid fa-circle-info criterio-hint"></i></span>
+                            <div class="criterio-panel">
+                                <div class="criterio-label"><i class="fa-solid fa-star-half-stroke mr-1"></i>Criterio de
+                                    Desempeño</div>
+                                <div class="criterio-text">Identifica los principales cambios educativos asociados al
+                                    proceso de independencia.</div>
+                            </div>
+                        </li>
+                        <li class="subtema-item open-left"
+                            data-criterio="Describe las iniciativas educativas implementadas en los primeros anos de la Republica.">
+                            <span class="flex items-center gap-2"><i
+                                    class="fa-solid fa-angle-right text-vino-500"></i>Subtema 8.2. Primeras políticas
+                                educativas republicanas<i class="fa-solid fa-circle-info criterio-hint"></i></span>
+                            <div class="criterio-panel">
+                                <div class="criterio-label"><i class="fa-solid fa-star-half-stroke mr-1"></i>Criterio de
+                                    Desempeño</div>
+                                <div class="criterio-text">Describe las iniciativas educativas implementadas en los
+                                    primeros años de la República.</div>
+                            </div>
+                        </li>
+                        <li class="subtema-item"
+                            data-criterio="Analiza la influencia de figuras relevantes en el desarrollo educativo nacional.">
+                            <span class="flex items-center gap-2"><i
+                                    class="fa-solid fa-angle-right text-vino-500"></i>Subtema 8.3. Aportes de educadores
+                                y reformadores bolivianos<i class="fa-solid fa-circle-info criterio-hint"></i></span>
+                            <div class="criterio-panel">
+                                <div class="criterio-label"><i class="fa-solid fa-star-half-stroke mr-1"></i>Criterio de
+                                    Desempeño</div>
+                                <div class="criterio-text">Analiza la influencia de figuras relevantes en el desarrollo
+                                    educativo nacional.</div>
+                            </div>
+                        </li>
+                        <li class="subtema-item open-left"
+                            data-criterio="Explica los avances y limitaciones del sistema educativo boliviano durante el siglo XIX.">
+                            <span class="flex items-center gap-2"><i
+                                    class="fa-solid fa-angle-right text-vino-500"></i>Subtema 8.4. Consolidación del
+                                sistema educativo nacional<i class="fa-solid fa-circle-info criterio-hint"></i></span>
+                            <div class="criterio-panel">
+                                <div class="criterio-label"><i class="fa-solid fa-star-half-stroke mr-1"></i>Criterio de
+                                    Desempeño</div>
+                                <div class="criterio-text">Explica los avances y limitaciones del sistema educativo
+                                    boliviano durante el siglo XIX.</div>
+                            </div>
+                        </li>
+                    </ul>
+                    <a href="https://www.ulasalle.edu.bo" target="_blank"
+                        class="mt-auto w-full bg-vino-700 hover:bg-vino-900 text-white font-semibold py-2.5 px-4 rounded-lg transition duration-300 flex items-center justify-center gap-2 hover:shadow-lg">
+                        <i class="fa-solid fa-file-pdf"></i> Dossier de Lecturas
+                    </a>
+                </div>
+
+                <!-- TEMA 9 -->
+                <div class="glass-card rounded-2xl p-6 flex flex-col h-full relative group reveal overflow-visible">
+                    <div
+                        class="absolute top-0 right-0 bg-vino-700 text-white font-bold px-4 py-1 rounded-bl-xl text-sm z-10 transition-colors group-hover:bg-vino-900">
+                        TEMA 9</div>
+                    <div class="flex flex-col items-center justify-center text-center pt-4 mb-4">
+                        <div
+                            class="w-16 h-16 bg-vino-100 text-vino-700 rounded-full flex items-center justify-center text-2xl mb-4 transition-all group-hover:scale-110 group-hover:bg-vino-200">
+                            <i class="fa-solid fa-school"></i>
+                        </div>
+                        <h3 class="font-bold text-lg text-gray-900 px-2 group-hover:text-vino-800 transition-colors">
+                            ESTRUCTURALISMO, FUNCIONALISMO Y CONDUCTISMO</h3>
+                    </div>
+                    <ul class="text-sm text-gray-600 space-y-1 mb-5 text-left w-full border-t border-vino-100 pt-4">
+                        <li class="subtema-item"
+                            data-criterio="Analiza el modelo educativo de Warisata mediante un estudio de caso.">
+                            <span class="flex items-center gap-2"><i
+                                    class="fa-solid fa-angle-right text-vino-500"></i>Subtema 9.1. La Escuela Ayllu de
+                                Warisata<i class="fa-solid fa-circle-info criterio-hint"></i></span>
+                            <div class="criterio-panel">
+                                <div class="criterio-label"><i class="fa-solid fa-star-half-stroke mr-1"></i>Criterio de
+                                    Desempeño</div>
+                                <div class="criterio-text">Analiza el modelo educativo de Warisata mediante un estudio
+                                    de caso.</div>
+                            </div>
+                        </li>
+                        <li class="subtema-item open-left"
+                            data-criterio="Explica los objetivos y alcances de las principales reformas educativas bolivianas.">
+                            <span class="flex items-center gap-2"><i
+                                    class="fa-solid fa-angle-right text-vino-500"></i>Subtema 9.2. Reformas educativas
+                                del siglo XX<i class="fa-solid fa-circle-info criterio-hint"></i></span>
+                            <div class="criterio-panel">
+                                <div class="criterio-label"><i class="fa-solid fa-star-half-stroke mr-1"></i>Criterio de
+                                    Desempeño</div>
+                                <div class="criterio-text">Explica los objetivos y alcances de las principales reformas
+                                    educativas bolivianas.</div>
+                            </div>
+                        </li>
+                        <li class="subtema-item"
+                            data-criterio="Compara las transformaciones educativas implementadas en diferentes periodos.">
+                            <span class="flex items-center gap-2"><i
+                                    class="fa-solid fa-angle-right text-vino-500"></i>Subtema 9.3. Ley de Reforma
+                                Educativa y cambios curriculares<i
+                                    class="fa-solid fa-circle-info criterio-hint"></i></span>
+                            <div class="criterio-panel">
+                                <div class="criterio-label"><i class="fa-solid fa-star-half-stroke mr-1"></i>Criterio de
+                                    Desempeño</div>
+                                <div class="criterio-text">Compara las transformaciones educativas implementadas en
+                                    diferentes periodos.</div>
+                            </div>
+                        </li>
+                        <li class="subtema-item open-left"
+                            data-criterio="Evalua criticamente los avances y retos de la educacion boliviana contemporanea.">
+                            <span class="flex items-center gap-2"><i
+                                    class="fa-solid fa-angle-right text-vino-500"></i>Subtema 9.4. Ley Avelino
+                                Siñani-Elizardo Pérez y desafíos actuales<i
+                                    class="fa-solid fa-circle-info criterio-hint"></i></span>
+                            <div class="criterio-panel">
+                                <div class="criterio-label"><i class="fa-solid fa-star-half-stroke mr-1"></i>Criterio de
+                                    Desempeño</div>
+                                <div class="criterio-text">Evalúa criticamente los avances y retos de la educación
+                                    boliviana contemporánea.</div>
+                            </div>
+                        </li>
+                    </ul>
+                    <a href="https://www.ulasalle.edu.bo" target="_blank"
+                        class="mt-auto w-full bg-vino-700 hover:bg-vino-900 text-white font-semibold py-2.5 px-4 rounded-lg transition duration-300 flex items-center justify-center gap-2 hover:shadow-lg">
+                        <i class="fa-solid fa-file-pdf"></i> Dossier de Lecturas
+                    </a>
+                </div>
+
+                <!-- TEMA 10 -->
+                <div class="glass-card rounded-2xl p-6 flex flex-col h-full relative group reveal overflow-visible">
+                    <div
+                        class="absolute top-0 right-0 bg-vino-700 text-white font-bold px-4 py-1 rounded-bl-xl text-sm z-10 transition-colors group-hover:bg-vino-900">
+                        TEMA 10</div>
+                    <div class="flex flex-col items-center justify-center text-center pt-4 mb-4">
+                        <div
+                            class="w-16 h-16 bg-vino-100 text-vino-700 rounded-full flex items-center justify-center text-2xl mb-4 transition-all group-hover:scale-110 group-hover:bg-vino-200">
+                            <i class="fa-solid fa-earth-americas"></i>
+                        </div>
+                        <h3 class="font-bold text-lg text-gray-900 px-2 group-hover:text-vino-800 transition-colors">
+                            PSICOLOGIA APLICADA A LA EDUCACIÓN </h3>
+                    </div>
+                    <ul class="text-sm text-gray-600 space-y-1 mb-5 text-left w-full border-t border-vino-100 pt-4">
+                        <li class="subtema-item"
+                            data-criterio="Identifica caracteristicas comunes y diferencias entre los sistemas educativos latinoamericanos.">
+                            <span class="flex items-center gap-2"><i
+                                    class="fa-solid fa-angle-right text-vino-500"></i>Subtema 10.1. Tendencias
+                                educativas en América Latina<i class="fa-solid fa-circle-info criterio-hint"></i></span>
+                            <div class="criterio-panel">
+                                <div class="criterio-label"><i class="fa-solid fa-star-half-stroke mr-1"></i>Criterio de
+                                    Desempeño</div>
+                                <div class="criterio-text">Identifica caracteristicas comunes y diferencias entre los
+                                    sistemas educativos latinoamericanos.</div>
+                            </div>
+                        </li>
+                        <li class="subtema-item open-left"
+                            data-criterio="Analiza la influencia de corrientes educativas contemporaneas en la region.">
+                            <span class="flex items-center gap-2"><i
+                                    class="fa-solid fa-angle-right text-vino-500"></i>Subtema 10.2. Movimientos
+                                pedagógicos contemporáneos<i class="fa-solid fa-circle-info criterio-hint"></i></span>
+                            <div class="criterio-panel">
+                                <div class="criterio-label"><i class="fa-solid fa-star-half-stroke mr-1"></i>Criterio de
+                                    Desempeño</div>
+                                <div class="criterio-text">Analiza la influencia de corrientes educativas contemporáneas
+                                    en la región.</div>
+                            </div>
+                        </li>
+                        <li class="subtema-item"
+                            data-criterio="Explica el impacto de la globalizacion y las tecnologias digitales en la educacion.">
+                            <span class="flex items-center gap-2"><i
+                                    class="fa-solid fa-angle-right text-vino-500"></i>Subtema 10.3. Educación en el
+                                contexto de la globalización<i class="fa-solid fa-circle-info criterio-hint"></i></span>
+                            <div class="criterio-panel">
+                                <div class="criterio-label"><i class="fa-solid fa-star-half-stroke mr-1"></i>Criterio de
+                                    Desempeño</div>
+                                <div class="criterio-text">Explica el impacto de la globalización y las tecnologías
+                                    digitales en la educación.</div>
+                            </div>
+                        </li>
+                        <li class="subtema-item open-left"
+                            data-criterio="Formula propuestas fundamentadas para afrontar los desafios educativos del siglo XXI mediante un proyecto de investigacion historica.">
+                            <span class="flex items-center gap-2"><i
+                                    class="fa-solid fa-angle-right text-vino-500"></i>Subtema 10.4. Retos y perspectivas
+                                futuras de la educación<i class="fa-solid fa-circle-info criterio-hint"></i></span>
+                            <div class="criterio-panel">
+                                <div class="criterio-label"><i class="fa-solid fa-star-half-stroke mr-1"></i>Criterio de
+                                    Desempeño</div>
+                                <div class="criterio-text">Formula propuestas fundamentadas para afrontar los desafíos
+                                    educativos del siglo XXI mediante un proyecto de investigación histórica.</div>
+                            </div>
+                        </li>
+                    </ul>
+                    <a href="https://www.ulasalle.edu.bo" target="_blank"
+                        class="mt-auto w-full bg-vino-700 hover:bg-vino-900 text-white font-semibold py-2.5 px-4 rounded-lg transition duration-300 flex items-center justify-center gap-2 hover:shadow-lg">
+                        <i class="fa-solid fa-file-pdf"></i> Dossier de Lecturas
+                    </a>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- EVALUACION -->
+    <section id="evaluacion" class="py-20 bg-white border-y border-gray-200 relative overflow-hidden">
+        <div class="absolute -right-20 -top-20 w-64 h-64 bg-vino-50 rounded-full opacity-50"></div>
+        <div class="absolute -left-20 -bottom-20 w-80 h-80 bg-vino-50 rounded-full opacity-50"></div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">División por Fases y Evaluación</h2>
+                <div class="h-1 w-24 bg-vino-600 mx-auto rounded"></div>
+                <p class="mt-4 text-gray-600 max-w-2xl mx-auto">Distribución porcentual del avance y calificación de la
+                    asignatura a lo largo del semestre académico.</p>
+            </div>
+
+            <div class="flex flex-col md:flex-row justify-center items-stretch gap-8 max-w-5xl mx-auto">
+
+                <!-- Fase 1 -->
+                <div id="fase1-card"
+                    class="w-full md:w-1/3 bg-white rounded-2xl p-8 shadow-lg border border-gray-100 transform transition duration-300 hover:-translate-y-2 hover:border-vino-300 hover:bg-vino-50 hover:shadow-xl relative flex flex-col justify-center reveal group cursor-pointer"
+                    onclick="toggleFase('fase1-detalle')">
+                    <div
+                        class="absolute -top-5 left-1/2 transform -translate-x-1/2 bg-vino-700 text-white font-bold text-xl w-12 h-12 rounded-full flex items-center justify-center shadow-md group-hover:scale-110 group-hover:bg-vino-900 transition-all">
+                        1</div>
+                    <div class="text-center mt-4">
+                        <h3 class="text-xl font-bold text-gray-900 mb-2">Primera Fase</h3>
+                        <p class="text-vino-600 font-medium mb-4">Temas 1, 2, 3 y 4</p>
+                        <div
+                            class="text-5xl font-extrabold text-vino-800 mb-2 group-hover:scale-105 transition-transform">
+                            35%</div>
+                        <p class="text-sm text-gray-500 uppercase tracking-widest mb-3">del avance total</p>
+                        <p class="text-xs text-vino-500 font-semibold"><i class="fa-solid fa-circle-info mr-1"></i>Clic
+                            para ver Criterios de Evaluación</p>
+                    </div>
+                    <!-- Desglose Primera Fase -->
+                    <div id="fase1-detalle"
+                        class="hidden mt-4 pt-4 border-t border-vino-200 text-left text-sm text-gray-700 space-y-1.5">
+                        <div class="flex justify-between"><span>Examen Presencial</span><span
+                                class="font-bold text-vino-700">15 pts</span></div>
+                        <div class="flex justify-between"><span>Asistencia y participación</span><span
+                                class="font-bold text-vino-700">4 pts</span></div>
+                        <div class="flex justify-between"><span>Trabajo en grupo y exposición</span><span
+                                class="font-bold text-vino-700">6 pts</span></div>
+                        <div class="flex justify-between"><span>Trabajos prácticos</span><span
+                                class="font-bold text-vino-700">5 pts</span></div>
+                        <div class="flex justify-between"><span>Control de lectura</span><span
+                                class="font-bold text-vino-700">5 pts</span></div>
+                        <div class="flex justify-between pt-1 border-t border-vino-200 font-bold text-vino-800">
+                            <span>Total</span><span>35 pts</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Fase 2 -->
+                <div id="fase2-card"
+                    class="w-full md:w-1/3 bg-white rounded-2xl p-8 shadow-lg border border-gray-100 transform transition duration-300 hover:-translate-y-2 hover:border-vino-300 hover:bg-vino-50 hover:shadow-xl relative flex flex-col justify-center reveal group cursor-pointer"
+                    style="transition-delay: 100ms;" onclick="toggleFase('fase2-detalle')">
+                    <div
+                        class="absolute -top-5 left-1/2 transform -translate-x-1/2 bg-vino-700 text-white font-bold text-xl w-12 h-12 rounded-full flex items-center justify-center shadow-md group-hover:scale-110 group-hover:bg-vino-900 transition-all">
+                        2</div>
+                    <div class="text-center mt-4">
+                        <h3 class="text-xl font-bold text-gray-900 mb-2">Segunda Fase</h3>
+                        <p class="text-vino-600 font-medium mb-4">Temas 5, 6, 7 y 8</p>
+                        <div
+                            class="text-5xl font-extrabold text-vino-800 mb-2 group-hover:scale-105 transition-transform">
+                            35%</div>
+                        <p class="text-sm text-gray-500 uppercase tracking-widest mb-3">del avance total</p>
+                        <p class="text-xs text-vino-500 font-semibold"><i class="fa-solid fa-circle-info mr-1"></i>Clic
+                            para ver Criterios de Evaluación</p>
+                    </div>
+                    <!-- Desglose Segunda Fase -->
+                    <div id="fase2-detalle"
+                        class="hidden mt-4 pt-4 border-t border-vino-200 text-left text-sm text-gray-700 space-y-1.5">
+                        <div class="flex justify-between"><span>Examen Presencial</span><span
+                                class="font-bold text-vino-700">15 pts</span></div>
+                        <div class="flex justify-between"><span>Asistencia y participación</span><span
+                                class="font-bold text-vino-700">4 pts</span></div>
+                        <div class="flex justify-between"><span>Portafolio de evidencias</span><span
+                                class="font-bold text-vino-700">6 pts</span></div>
+                        <div class="flex justify-between"><span>Trabajos prácticos</span><span
+                                class="font-bold text-vino-700">5 pts</span></div>
+                        <div class="flex justify-between"><span>Control de lectura</span><span
+                                class="font-bold text-vino-700">5 pts</span></div>
+                        <div class="flex justify-between pt-1 border-t border-vino-200 font-bold text-vino-800">
+                            <span>Total</span><span>35 pts</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Examen Final -->
+                <div class="w-full md:w-1/3 bg-vino-800 text-white rounded-2xl p-8 shadow-xl transform transition duration-300 hover:-translate-y-2 hover:bg-vino-900 hover:shadow-2xl relative flex flex-col justify-center reveal group"
+                    style="transition-delay: 200ms;">
+                    <div class="absolute inset-0 overflow-hidden rounded-2xl pointer-events-none">
+                        <div class="absolute top-0 right-0 w-32 h-32 bg-white opacity-5 rounded-bl-full"></div>
+                    </div>
+                    <div
+                        class="absolute -top-5 left-1/2 transform -translate-x-1/2 bg-vino-900 text-white border-2 border-vino-600 font-bold text-xl w-12 h-12 rounded-full flex items-center justify-center shadow-md z-10 group-hover:scale-110 transition-all">
+                        <i class="fa-solid fa-flag-checkered text-sm"></i>
+                    </div>
+                    <div class="text-center mt-4 relative z-10">
+                        <h3 class="text-xl font-bold text-white mb-2">Examen Final</h3>
+                        <p class="text-vino-200 font-medium mb-4">Temas 9 y 10</p>
+                        <div class="text-5xl font-extrabold text-white mb-2 group-hover:scale-105 transition-transform">
+                            30%</div>
+                        <p class="text-xs text-vino-300 uppercase tracking-widest mb-1">del avance total</p>
+                        <!-- BOTON ACCESO ONEDRIVE -->
+                        <a id="btn-examen-final" href="./PROYECTO_FINAL.pdf" download="PROYECTO_FINAL.pdf"
+                            target="_blank" class="onedrive-btn">
+                            <i class="fa-brands fa-microsoft"></i> Acceder al Proyecto Final
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- BIBLIOTECA DIGITAL -->
+    <section id="biblioteca" class="py-20 bg-vino-900 text-white relative">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center reveal">
+            <i
+                class="fa-solid fa-book-bookmark text-5xl mb-6 text-vino-200 hover:scale-110 hover:text-white transition duration-300 cursor-default"></i>
+            <h2 class="text-3xl md:text-4xl font-bold mb-4">Recursos de Biblioteca Digital</h2>
+            <p class="text-vino-100 mb-10">
+                Accede a los recursos académicos y científicos de la biblioteca digital para consultar libros
+                electrónicos, artículos científicos y otras fuentes de información que apoyen tu aprendizaje y tus
+                trabajos de investigación.
+            </p>
+
+            <!-- Recursos principales -->
+            <div class="flex flex-col sm:flex-row gap-6 justify-center mb-10">
+                <a href="https://elibro.net/es/lc/ulasalle/login_usuario/" target="_blank"
+                    class="flex flex-col items-center bg-white text-vino-900 p-6 rounded-2xl shadow-xl hover:bg-vino-50 hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 w-full sm:w-64 group border-2 border-transparent hover:border-vino-300">
+                    <i
+                        class="fa-solid fa-book text-4xl mb-3 text-vino-700 group-hover:scale-110 group-hover:text-vino-900 transition-all"></i>
+                    <span class="font-bold text-xl mb-2">eLibro</span>
+                    <span class="text-xs text-center text-gray-600">Libros electrónicos y bibliografía académica</span>
+                </a>
+                <a href="https://search.ebscohost.com/" target="_blank"
+                    class="flex flex-col items-center bg-white text-vino-900 p-6 rounded-2xl shadow-xl hover:bg-vino-50 hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 w-full sm:w-64 group border-2 border-transparent hover:border-vino-300">
+                    <i
+                        class="fa-solid fa-database text-4xl mb-3 text-vino-700 group-hover:scale-110 group-hover:text-vino-900 transition-all"></i>
+                    <span class="font-bold text-xl mb-2">EBSCOhost</span>
+                    <span class="text-xs text-center text-gray-600">Artículos, revistas y bases de datos
+                        especializadas</span>
+                </a>
+            </div>
+
+            <!-- Video tutoriales -->
+            <div>
+                <p class="text-vino-300 text-sm font-semibold uppercase tracking-widest mb-5">
+                    <i class="fa-solid fa-video mr-2"></i>Video Tutoriales de Uso
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                    <a id="btn-tutorial-elibro" href="https://www.youtube.com/watch?v=KDSE3n0fKAI" target="_blank"
+                        class="video-btn">
+                        <i class="fa-brands fa-youtube yt-icon"></i>
+                        <span>Tutorial: Cómo usar <strong>eLibro</strong></span>
+                        <i class="fa-solid fa-arrow-up-right-from-square text-xs opacity-60"></i>
+                    </a>
+                    <a id="btn-tutorial-ebsco" href="https://www.youtube.com/watch?v=K2xETnLg-kI" target="_blank"
+                        class="video-btn">
+                        <i class="fa-brands fa-youtube yt-icon"></i>
+                        <span>Tutorial: Cómo usar <strong>EBSCOhost</strong></span>
+                        <i class="fa-solid fa-arrow-up-right-from-square text-xs opacity-60"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="bg-vino-950 text-vino-200 py-6 text-center text-sm border-t border-vino-800">
+        <p>&copy; 2026 Universidad La Salle Bolivia. Asignatura: EDU-315.</p>
+    </footer>
+
+    <script>
+        // Funcion para mostrar/ocultar desglose de fases
+        function toggleFase(id) {
+            const el = document.getElementById(id);
+            if (el) el.classList.toggle('hidden');
+        }
+
+        // Animación reveal al hacer scroll
+        document.addEventListener('DOMContentLoaded', () => {
+            const reveals = document.querySelectorAll('.reveal');
+            const observerOptions = { threshold: 0.1, rootMargin: "0px 0px -50px 0px" };
+            const observer = new IntersectionObserver((entries, obs) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active');
+                        obs.unobserve(entry.target);
+                    }
+                });
+            }, observerOptions);
+            reveals.forEach(r => observer.observe(r));
+        });
+
+        // Criterios de Desempeño — toggle al hacer click en cada subtema
+        document.addEventListener('DOMContentLoaded', () => {
+            const items = document.querySelectorAll('.subtema-item');
+
+            items.forEach(item => {
+                item.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const isOpen = item.classList.contains('active-criterio');
+                    // Cerrar todos
+                    items.forEach(i => i.classList.remove('active-criterio'));
+                    // Abrir el seleccionado si no estaba abierto
+                    if (!isOpen) {
+                        item.classList.add('active-criterio');
+                    }
+                });
+            });
+
+            // Cerrar al hacer click fuera
+            document.addEventListener('click', () => {
+                items.forEach(i => i.classList.remove('active-criterio'));
+            });
+        });
+    </script>
+</body>
+
+</html>
